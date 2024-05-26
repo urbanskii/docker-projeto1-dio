@@ -1,0 +1,37 @@
+services:
+  web:
+    image: node:14
+    working_dir: /app
+    volumes:
+      - /home/r1/docker-projeto1-dio/data/node/:/app
+      - /home/r1/docker-projeto1-dio/data/html/:/app/public
+    ports:
+      - "4500:3000"
+    command: sh -c "cd /app && npm install && npm start"
+    networks:
+      - minha-rede
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: "Senha123"
+      MYSQL_DATABASE: "testedb"
+    ports:
+      - "3306:3306"
+    volumes:
+      - /docker-projeto1-dio/data/mysql/:/var/lib/mysql
+    networks:
+      - minha-rede
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      MYSQL_ROOT_PASSWORD: "Senha123"
+    ports:
+      - "8000:80"
+    networks:
+      - minha-rede
+
+networks:
+  minha-rede:
+    driver: bridge
